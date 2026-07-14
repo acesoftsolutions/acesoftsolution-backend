@@ -31,10 +31,9 @@ class EmailService {
   /**
    * Admin HTML Template
    */
-  /**
-   * Premium Admin HTML Template
-   */
   private getAdminTemplate(data: IContact): string {
+    const logoUrl = `${process.env.BASE_URL || "https://acesoftsolution.com"}/images/logo.png`;
+
     return `
 <!DOCTYPE html>
 <html lang="en">
@@ -51,57 +50,56 @@ class EmailService {
             padding: 40px 20px;
             margin: 0;
             color: #1e2937;
+            line-height: 1.6;
         }
 
         .container {
             max-width: 680px;
             margin: 0 auto;
             background: #ffffff;
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+            box-shadow: 0 25px 50px rgba(15, 23, 42, 0.1);
+            border: 1px solid #e2e8f0;
         }
 
         .header {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            color: white;
-            padding: 40px 30px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 40px 40px 30px;
             text-align: center;
-            position: relative;
+            border-bottom: 1px solid #e2e8f0;
         }
 
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: rgba(255,255,255,0.3);
+        .logo {
+            width: 180px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.05));
         }
 
         .header h2 {
-            margin: 0;
+            margin: 0 0 8px 0;
             font-size: 28px;
             font-weight: 700;
-            letter-spacing: -0.5px;
+            color: #0f172a;
+            letter-spacing: -0.6px;
         }
 
         .header p {
-            margin: 8px 0 0 0;
-            opacity: 0.9;
-            font-size: 16px;
+            margin: 0;
+            color: #64748b;
+            font-size: 16.5px;
         }
 
         .content {
-            padding: 40px 35px;
+            padding: 45px 40px;
         }
 
         .info-card {
             background: #f8fafc;
-            border-radius: 12px;
-            padding: 28px;
-            margin-bottom: 30px;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 35px;
             border: 1px solid #e2e8f0;
         }
 
@@ -119,59 +117,56 @@ class EmailService {
         }
 
         td {
-            padding: 16px 0;
+            padding: 18px 0;
             vertical-align: top;
         }
 
         .label {
             font-weight: 600;
             color: #64748b;
-            width: 180px;
-            padding-right: 20px;
+            width: 160px;
+            padding-right: 25px;
         }
 
         .value {
             font-weight: 500;
             color: #1e2937;
-            line-height: 1.5;
         }
 
-        .highlight {
-            background: #eff6ff;
-            color: #1e40af;
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 14px;
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 13.5px;
+            font-weight: 600;
         }
 
         .message-box {
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 8px;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 10px;
             white-space: pre-wrap;
             font-size: 15.5px;
-            line-height: 1.6;
+            line-height: 1.65;
+            color: #334155;
         }
 
         .footer {
             background: #0f172a;
             color: #94a3b8;
             text-align: center;
-            padding: 28px 30px;
-            font-size: 13px;
+            padding: 32px 40px;
+            font-size: 13.5px;
         }
 
         .footer strong {
             color: #cbd5e1;
         }
 
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 9999px;
-            font-size: 13px;
+        .highlight {
+            color: #2563eb;
             font-weight: 600;
         }
     </style>
@@ -180,10 +175,11 @@ class EmailService {
 
 <div class="container">
 
-    <!-- Header -->
+    <!-- Header with Logo -->
     <div class="header">
-        <h2>🚀 New Website Enquiry</h2>
-        <p>A potential client just submitted a contact form</p>
+        <img src="${logoUrl}" alt="Ace Soft Solution" class="logo" />
+        <h2>New Website Enquiry</h2>
+        <p>A potential client just reached out via contact form</p>
     </div>
 
     <!-- Content -->
@@ -193,12 +189,12 @@ class EmailService {
             <table>
                 <tr>
                     <td class="label">Name</td>
-                    <td class="value">${data.name}</td>
+                    <td class="value"><strong>${data.name}</strong></td>
                 </tr>
                 <tr>
                     <td class="label">Email</td>
                     <td class="value">
-                        <a href="mailto:${data.email}" style="color:#3b82f6; text-decoration:none;">${data.email}</a>
+                        <a href="mailto:${data.email}" style="color:#2563eb; text-decoration:none;">${data.email}</a>
                     </td>
                 </tr>
                 <tr>
@@ -215,7 +211,7 @@ class EmailService {
                         ${
                           data.needsNDA
                             ? '<span class="badge" style="background:#fef3c7;color:#854d0e;">Yes – NDA Required</span>'
-                            : '<span class="badge" style="background:#e0f2fe;color:#0e7490;">No</span>'
+                            : '<span class="badge" style="background:#ecfdf5;color:#10b981;">No</span>'
                         }
                     </td>
                 </tr>
@@ -224,7 +220,7 @@ class EmailService {
                     <td class="value">
                         ${
                           data.marketingConsent
-                            ? '<span class="highlight">✅ Yes</span>'
+                            ? '<span class="highlight">✅ Yes, willing to receive updates</span>'
                             : '<span style="color:#64748b;">No</span>'
                         }
                     </td>
@@ -233,9 +229,11 @@ class EmailService {
         </div>
 
         <!-- Project Brief -->
-        <h3 style="margin:0 0 12px 0; color:#1e2937; font-size:18px;">Project Brief</h3>
+        <h3 style="margin:0 0 14px 0; color:#1e2937; font-size:19px; font-weight:600;">
+            Project Brief
+        </h3>
         <div class="message-box">
-            ${data.message ? data.message.replace(/\n/g, "<br>") : "No message provided."}
+            ${data.message ? data.message.replace(/\n/g, "<br>") : "No additional message provided."}
         </div>
 
     </div>
@@ -243,7 +241,12 @@ class EmailService {
     <!-- Footer -->
     <div class="footer">
         <strong>Ace Soft Solution</strong><br>
-        Contact Form • ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+        Contact Form Submission • 
+        ${new Date().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
     </div>
 
 </div>
@@ -256,10 +259,9 @@ class EmailService {
   /**
    * Customer HTML Template
    */
-  /**
-   * Premium Customer Thank You Template
-   */
   private getCustomerTemplate(data: IContact): string {
+    const logoUrl = `${process.env.BASE_URL || "https://acesoftsolution.com"}/images/logo.png`;
+
     return `
 <!DOCTYPE html>
 <html lang="en">
@@ -283,30 +285,38 @@ class EmailService {
             max-width: 680px;
             margin: 0 auto;
             background: #ffffff;
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+            box-shadow: 0 25px 50px rgba(15, 23, 42, 0.1);
+            border: 1px solid #e2e8f0;
         }
 
         .header {
-            background: linear-gradient(135deg, #12C7B5 0%, #0ea88f 100%);
-            color: white;
-            padding: 50px 30px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 45px 40px 35px;
             text-align: center;
-            position: relative;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .logo {
+            width: 180px;
+            height: auto;
+            margin-bottom: 24px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.06));
         }
 
         .header h1 {
-            margin: 0;
-            font-size: 42px;
+            margin: 0 0 8px 0;
+            font-size: 38px;
             font-weight: 700;
-            letter-spacing: -1px;
+            color: #0f172a;
+            letter-spacing: -1.2px;
         }
 
         .header .subtitle {
-            font-size: 18px;
-            margin: 12px 0 0 0;
-            opacity: 0.95;
+            font-size: 18.5px;
+            color: #64748b;
+            margin: 0;
         }
 
         .content {
@@ -316,7 +326,7 @@ class EmailService {
         }
 
         .content p {
-            margin: 18px 0;
+            margin: 20px 0;
         }
 
         .highlight {
@@ -326,28 +336,36 @@ class EmailService {
 
         .button {
             display: inline-block;
-            padding: 16px 32px;
+            padding: 16px 36px;
             background: #12C7B5;
             color: white !important;
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 16px;
-            margin: 25px 0 10px 0;
+            font-size: 16.5px;
+            margin: 25px 0 15px 0;
             box-shadow: 0 8px 20px rgba(18, 199, 181, 0.3);
             transition: all 0.3s ease;
         }
 
         .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(18, 199, 181, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(18, 199, 181, 0.4);
+        }
+
+        .next-steps {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 28px;
+            margin: 35px 0;
+            border: 1px solid #e2e8f0;
         }
 
         .footer {
             background: #0f172a;
             color: #94a3b8;
             text-align: center;
-            padding: 32px 30px;
+            padding: 35px 40px;
             font-size: 14px;
         }
 
@@ -360,8 +378,9 @@ class EmailService {
 
 <div class="container">
 
-    <!-- Header -->
+    <!-- Header with Logo -->
     <div class="header">
+        <img src="${logoUrl}" alt="Ace Soft Solution" class="logo" />
         <h1>Thank You ❤️</h1>
         <p class="subtitle">We’ve received your enquiry</p>
     </div>
@@ -372,20 +391,21 @@ class EmailService {
         
         <p>
             Thank you for reaching out to <strong>Ace Soft Solution</strong>. 
-            We truly appreciate your interest in working with us.
+            We truly appreciate your trust and interest in working with us.
         </p>
         
         <p>
-            Our team has successfully received your project details and is currently reviewing them.
+            Our team has successfully received your project details and is reviewing them carefully.
         </p>
-        
+
+        <div class="next-steps">
+            <strong>What happens next?</strong><br><br>
+            • One of our expert consultants will contact you within <strong class="highlight">24 business hours</strong>.<br>
+            • We’ll discuss your requirements in detail and provide a tailored proposal.
+        </div>
+
         <p>
-            One of our expert consultants will get in touch with you within 
-            <strong class="highlight">24 business hours</strong>.
-        </p>
-        
-        <p>
-            In the meantime, feel free to explore our recent work and services.
+            In the meantime, feel free to explore our recent projects and services.
         </p>
 
         <center>
@@ -394,15 +414,15 @@ class EmailService {
             </a>
         </center>
 
-        <p style="margin-top: 35px; font-size: 15px; color: #64748b;">
-            If you have any urgent questions, you can reply directly to this email.
+        <p style="margin-top: 40px; font-size: 15.5px; color: #64748b;">
+            If you have any urgent questions, simply reply to this email. We’re here to help!
         </p>
     </div>
 
     <!-- Footer -->
     <div class="footer">
         <strong>Ace Soft Solution</strong><br>
-        Professional Web & Software Solutions<br>
+        Professional Web & Software Development<br>
         © ${new Date().getFullYear()} All Rights Reserved
     </div>
 
